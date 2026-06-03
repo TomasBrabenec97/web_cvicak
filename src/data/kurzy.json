@@ -5,22 +5,34 @@
     {
       "nazev": "Štěňata a začátečníci",
       "popis": "Základy poslušnosti a socializace.",
-      "termin": "neděle a středa od 18:00"
+      "termin": "neděle a středa od 18:00",
+      "rozvrh": [
+        { "den": "středa", "cas": "18:00" },
+        { "den": "neděle", "cas": "18:00" }
+      ]
     },
     {
       "nazev": "Pokročilí",
       "popis": "Pro psy, kteří již ovládají základy a chtějí se dále rozvíjet.",
-      "termin": "neděle a středa od 18:00"
+      "termin": "neděle a středa od 18:00",
+      "rozvrh": [
+        { "den": "středa", "cas": "18:00" },
+        { "den": "neděle", "cas": "18:00" }
+      ]
     },
     {
       "nazev": "Sportovky",
       "popis": "Výcvik hrou pro psy se základní poslušností, kteří se chtějí hýbat.",
-      "termin": "čtvrtek"
+      "termin": "čtvrtek",
+      "rozvrh": [
+        { "den": "čtvrtek", "cas": "" }
+      ]
     },
     {
       "nazev": "Pachové práce",
       "popis": "Rozvoj přirozených schopností psa – nosework, stopování.",
-      "termin": "termín bude doplněn"
+      "termin": "termín bude doplněn",
+      "rozvrh": []
     }
   ],
   "cena": "4 000 Kč / 10 lekcí (zaváděcí cena)",

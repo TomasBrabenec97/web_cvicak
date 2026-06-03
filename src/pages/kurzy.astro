@@ -3,6 +3,23 @@ import Layout from '../layouts/Layout.astro';
 import kurzy from '../data/kurzy.json';
 
 const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+
+// Každý kurz dostane barvu podle pořadí (--kurz-1 … --kurz-4 v global.css),
+// stejná barva se používá na kartě i v rozvrhu
+const barva = (i: number) => `--kurz-color: var(--kurz-${(i % 4) + 1})`;
+
+// Týdenní rozvrh: kurzy rozdělené do dnů podle pole `rozvrh` v kurzy.json
+const DNY = ['pondělí', 'úterý', 'středa', 'čtvrtek', 'pátek', 'sobota', 'neděle'];
+const tyden = DNY.map((den) => ({
+  den,
+  lekce: kurzy.kurzy
+    .flatMap((kurz, i) =>
+      kurz.rozvrh
+        .filter((r) => r.den === den)
+        .map((r) => ({ nazev: kurz.nazev, cas: r.cas, barva: barva(i) })),
+    )
+    .sort((a, b) => a.cas.localeCompare(b.cas)),
+}));
 ---
 
 <Layout title="Kurzy" description="Výcvikové kurzy ZKO Nupaky – štěňata, začátečníci, pokročilí, sportovky i pachové práce.">
@@ -13,12 +30,27 @@ const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
 
       <h2 class="section-title" style="margin-top: 2.5rem;">Nabídka kurzů</h2>
       <div class="grid grid-2">
-        {kurzy.kurzy.map((kurz) => (
-          <article class="card">
+        {kurzy.kurzy.map((kurz, i) => (
+          <article class="card kurz-card" style={barva(i)}>
             <h3>{kurz.nazev}</h3>
             <p class="muted">{kurz.popis}</p>
             <span class="badge">{kurz.termin}</span>
           </article>
+        ))}
+      </div>
+
+      <h2 class="section-title" style="margin-top: 3rem;">Týdenní rozvrh</h2>
+      <div class="schedule">
+        {tyden.map(({ den, lekce }) => (
+          <div class={`schedule-day${lekce.length ? '' : ' is-empty'}`}>
+            <div class="schedule-day-name">{den}</div>
+            {lekce.map((l) => (
+              <div class="lesson" style={l.barva}>
+                <strong>{l.nazev}</strong>
+                {l.cas && <span class="cas">od {l.cas}</span>}
+              </div>
+            ))}
+          </div>
         ))}
       </div>
 
