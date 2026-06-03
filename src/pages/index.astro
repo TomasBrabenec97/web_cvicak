@@ -10,6 +10,9 @@ const aktuality = (await getCollection('aktuality'))
   .slice(0, 3);
 
 const datum = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' });
+
+// Stejné barvy kurzů jako na stránce Kurzy (--kurz-1 … --kurz-4 v global.css)
+const barva = (i: number) => `--kurz-color: var(--kurz-${(i % 4) + 1})`;
 ---
 
 <Layout>
@@ -51,8 +54,8 @@ const datum = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'long', 
     <div class="container">
       <h2 class="section-title">Co u nás můžete trénovat</h2>
       <div class="grid grid-2">
-        {kurzy.kurzy.map((kurz) => (
-          <article class="card">
+        {kurzy.kurzy.map((kurz, i) => (
+          <article class="card kurz-card" style={barva(i)}>
             <h3>{kurz.nazev}</h3>
             <p class="muted">{kurz.popis}</p>
             <span class="badge">{kurz.termin}</span>
