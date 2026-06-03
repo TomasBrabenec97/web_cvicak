@@ -1,8 +1,25 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import kurzy from '../data/kurzy.json';
 
 const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+
+// Změny provozu z aktualit: ukazují se jen ty, které ještě platí
+// a začínají nejpozději za 6 týdnů
+const dnes = new Date();
+const horizont = new Date(dnes);
+horizont.setDate(horizont.getDate() + 42);
+const konecDne = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59);
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+const datumKratce = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric' });
+
+const zmeny = (await getCollection('aktuality'))
+  .flatMap((post) =>
+    post.data.zmenaProvozu ? [{ id: post.id, title: post.data.title, ...post.data.zmenaProvozu }] : [],
+  )
+  .filter((z) => konecDne(z.do) >= dnes && z.od <= horizont)
+  .sort((a, b) => a.od.valueOf() - b.od.valueOf());
 
 // Každý kurz dostane barvu podle pořadí (--kurz-1 … --kurz-4 v global.css),
 // stejná barva se používá na kartě i v rozvrhu
@@ -27,6 +44,17 @@ const tyden = DNY.map((den) => ({
     <div class="container">
       <h1>Naše výcvikové kurzy</h1>
       <p class="lead">{kurzy.uvod}</p>
+
+      {zmeny.map((z) => (
+        <aside class="notice" data-od={iso(z.od)} data-do={iso(z.do)}>
+          <span class="badge badge-zmena">Změna provozu</span>
+          <p>
+            <strong>{z.title}</strong>
+            <span class="muted"> · {datumKratce.format(z.od)} – {datumKratce.format(z.do)}</span>
+            · <a href={`${base}/aktuality/${z.id}/`}>více informací</a>
+          </p>
+        </aside>
+      ))}
 
       <h2 class="section-title" style="margin-top: 2.5rem;">Nabídka kurzů</h2>
       <div class="grid grid-2">
@@ -77,4 +105,17 @@ const tyden = DNY.map((den) => ({
       <a class="btn" href={`${base}/kontakty/`}>Všechny kontakty</a>
     </div>
   </section>
+
+  <script>
+    // Pojistka mezi nasazeními: skryje oznámení, které mezitím vypršelo
+    // nebo je dál než 6 týdnů dopředu
+    const dnes = new Date();
+    const horizont = new Date(dnes);
+    horizont.setDate(horizont.getDate() + 42);
+    document.querySelectorAll<HTMLElement>('.notice[data-od]').forEach((el) => {
+      const od = new Date(`${el.dataset.od}T00:00:00`);
+      const konec = new Date(`${el.dataset.do}T23:59:59`);
+      el.hidden = konec < dnes || od > horizont;
+    });
+  </script>
 </Layout>

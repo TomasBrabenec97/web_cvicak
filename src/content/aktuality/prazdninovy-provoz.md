@@ -1,6 +1,9 @@
 ---
 title: Prázdninový provoz
 date: 2026-06-03
+zmenaProvozu:
+  od: 2026-07-01
+  do: 2026-08-01
 ---
 
 V červenci 2026 je cvičiště **zavřeno**.

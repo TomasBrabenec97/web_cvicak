@@ -16,6 +16,7 @@
   --kurz-2: #3d6386; /* modrošedá */
   --kurz-3: #a3742c; /* okrová */
   --kurz-4: #7c5878; /* švestková */
+  --warn: #a0512f; /* terakotová – upozornění na změny provozu */
   --radius: 14px;
   --shadow: 0 1px 2px rgb(32 37 31 / 0.05), 0 8px 24px -12px rgb(32 37 31 / 0.12);
 }
@@ -323,6 +324,51 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .post-card .more:hover { text-decoration: underline; }
+
+/* ===== Změny provozu (aktuality ↔ kurzy) ===== */
+.post-card .meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem 0.8rem;
+}
+
+.badge-zmena {
+  background: color-mix(in srgb, var(--warn) 12%, white);
+  color: color-mix(in srgb, var(--warn) 78%, black);
+}
+
+.post-card-zmena { border-left: 4px solid var(--warn); }
+
+/* uplynulá změna: zašedlá a potlačená */
+.post-card-zmena.is-past {
+  border-left-color: #c8c5bb;
+  background: #f3f2ed;
+  opacity: 0.6;
+}
+
+.post-card-zmena.is-past .badge-zmena {
+  background: #e8e6df;
+  color: var(--muted);
+}
+
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.8rem;
+  margin-top: 1.6rem;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--warn) 30%, white);
+  border-left: 4px solid var(--warn);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--warn) 7%, white);
+}
+
+.notice[hidden] { display: none; }
+
+.notice p { margin: 0; }
 
 /* ===== Markdownový obsah ===== */
 .prose {

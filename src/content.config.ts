@@ -10,6 +10,14 @@ const aktuality = defineCollection({
     // volitelný obrázek k příspěvku – stačí název souboru nahraného
     // do src/assets/aktuality (cesta z CMS se ořeže na název souboru)
     obrazek: z.string().optional(),
+    // změna provozu (zavřeno, posunutý výcvik…): aktualita se zvýrazní
+    // a po dobu platnosti se ukazuje i na stránce Kurzy
+    zmenaProvozu: z
+      .object({
+        od: z.coerce.date(),
+        do: z.coerce.date(), // poslední den, kdy změna platí (včetně)
+      })
+      .optional(),
   }),
 });
 

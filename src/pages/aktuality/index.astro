@@ -9,6 +9,12 @@ const posts = (await getCollection('aktuality')).sort(
 );
 
 const datum = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' });
+const datumKratce = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric' });
+
+// Změny provozu: do konce platnosti zvýrazněné, potom zašedlé
+const dnes = new Date();
+const konecDne = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59);
+const iso = (d: Date) => d.toISOString().slice(0, 10);
 
 // Náhled: prostý text z markdownu, zkrácený na celá slova
 const nahled = (text: string, max = 180) => {
@@ -29,15 +35,39 @@ const nahled = (text: string, max = 180) => {
       <p class="lead">Novinky a oznámení z našeho cvičiště.</p>
 
       <div class="post-list" style="margin-top: 2rem;">
-        {posts.map((post) => (
-          <article class="post-card">
-            <time datetime={post.data.date.toISOString()}>{datum.format(post.data.date)}</time>
-            <h3><a href={`${base}/aktuality/${post.id}/`}>{post.data.title}</a></h3>
-            <p class="excerpt">{nahled(post.body ?? '')}</p>
-            <a class="more" href={`${base}/aktuality/${post.id}/`}>Číst celé →</a>
-          </article>
-        ))}
+        {posts.map((post) => {
+          const zmena = post.data.zmenaProvozu;
+          const probehla = zmena ? konecDne(zmena.do) < dnes : false;
+          return (
+            <article
+              class:list={['post-card', { 'post-card-zmena': !!zmena, 'is-past': probehla }]}
+              data-do={zmena ? iso(zmena.do) : undefined}
+            >
+              <div class="meta">
+                <time datetime={post.data.date.toISOString()}>{datum.format(post.data.date)}</time>
+                {zmena && (
+                  <span class="badge badge-zmena">
+                    Změna provozu · {datumKratce.format(zmena.od)} – {datumKratce.format(zmena.do)}
+                  </span>
+                )}
+              </div>
+              <h3><a href={`${base}/aktuality/${post.id}/`}>{post.data.title}</a></h3>
+              <p class="excerpt">{nahled(post.body ?? '')}</p>
+              <a class="more" href={`${base}/aktuality/${post.id}/`}>Číst celé →</a>
+            </article>
+          );
+        })}
       </div>
     </div>
   </section>
+
+  <script>
+    // Pojistka mezi nasazeními: stav „už neplatí“ se přepočítá i v prohlížeči,
+    // aby zašednutí nezáviselo jen na datu posledního buildu
+    const dnes = new Date();
+    document.querySelectorAll<HTMLElement>('.post-card-zmena[data-do]').forEach((karta) => {
+      const konec = new Date(`${karta.dataset.do}T23:59:59`);
+      karta.classList.toggle('is-past', konec < dnes);
+    });
+  </script>
 </Layout>
