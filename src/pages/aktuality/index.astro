@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+
+const posts = (await getCollection('aktuality')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+const datum = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Layout title="Aktuality" description="Novinky a oznámení ze ZKO Nupaky.">
+  <section class="section">
+    <div class="container">
+      <h1>Aktuality</h1>
+      <p class="lead">Novinky a oznámení z našeho cvičiště.</p>
+
+      <div class="post-list" style="margin-top: 2rem;">
+        {posts.map((post) => (
+          <article class="post-card">
+            <time datetime={post.data.date.toISOString()}>{datum.format(post.data.date)}</time>
+            <h3><a href={`${base}/aktuality/${post.id}/`}>{post.data.title}</a></h3>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

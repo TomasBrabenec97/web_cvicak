@@ -1,0 +1,14 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# misc
+.DS_Store
+*.log
+
+# lokální pracovní soubory (stará verze webu, stažené originály)
+_archive/
+_downloads/

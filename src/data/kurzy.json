@@ -1,0 +1,32 @@
+{
+  "uvod": "Naším cílem je naučit vás, jak se psem správně komunikovat a vybudovat si s ním pevný vztah založený na vzájemném porozumění. U začátečníků se zaměřujeme na socializaci a základy ovladatelnosti. S pokročilými týmy ladíme náročnější cviky a připravujeme je na zkoušky dle Národního (NZŘ) či Mezinárodního (IGP) zkušebního řádu.",
+  "prihlaseni": "Hlaste se u pí. Procházkové na tel. 602 875 309.",
+  "kurzy": [
+    {
+      "nazev": "Štěňata a začátečníci",
+      "popis": "Základy poslušnosti a socializace.",
+      "termin": "neděle a středa od 18:00"
+    },
+    {
+      "nazev": "Pokročilí",
+      "popis": "Pro psy, kteří již ovládají základy a chtějí se dále rozvíjet.",
+      "termin": "neděle a středa od 18:00"
+    },
+    {
+      "nazev": "Sportovky",
+      "popis": "Výcvik hrou pro psy se základní poslušností, kteří se chtějí hýbat.",
+      "termin": "čtvrtek"
+    },
+    {
+      "nazev": "Pachové práce",
+      "popis": "Rozvoj přirozených schopností psa – nosework, stopování.",
+      "termin": "termín bude doplněn"
+    }
+  ],
+  "cena": "4 000 Kč / 10 lekcí (zaváděcí cena)",
+  "individualni": "Individuální hodiny po dohodě s instruktorem – jednotná cena 600 Kč.",
+  "podminky": [
+    "Platné povinné očkování psa (očkovací průkaz s sebou).",
+    "Dobrá nálada."
+  ]
+}

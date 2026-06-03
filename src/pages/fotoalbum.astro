@@ -1,0 +1,67 @@
+---
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+
+// Galerie se skládá automaticky ze všech fotek ve složce src/assets/galerie
+const moduly = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/galerie/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}',
+  { eager: true },
+);
+
+const fotky = await Promise.all(
+  Object.entries(moduly)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(async ([, mod], i) => {
+      // nezvětšujeme nad původní rozměr fotky
+      const nahled = await getImage({ src: mod.default, width: Math.min(640, mod.default.width), format: 'webp' });
+      const velka = await getImage({ src: mod.default, width: Math.min(1600, mod.default.width), format: 'webp' });
+      return { nahled, velka, popisek: `Fotografie ${i + 1}` };
+    }),
+);
+---
+
+<Layout title="Fotoalbum" description="Fotografie ze cvičiště ZKO Nupaky.">
+  <section class="section">
+    <div class="container">
+      <h1>Fotoalbum</h1>
+      <p class="lead">Momentky z výcviku a života našeho cvičiště.</p>
+
+      <div class="gallery" style="margin-top: 2rem;">
+        {fotky.map((foto) => (
+          <button type="button" data-full={foto.velka.src} aria-label={`Zvětšit – ${foto.popisek}`}>
+            <img
+              src={foto.nahled.src}
+              alt={foto.popisek}
+              loading="lazy"
+              width={foto.nahled.attributes.width}
+              height={foto.nahled.attributes.height}
+            />
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <dialog class="lightbox">
+    <button class="close" type="button" aria-label="Zavřít">×</button>
+    <img src="" alt="Zvětšená fotografie" />
+  </dialog>
+
+  <script>
+    const dialog = document.querySelector<HTMLDialogElement>('.lightbox')!;
+    const velkyObrazek = dialog.querySelector('img')!;
+
+    document.querySelectorAll<HTMLButtonElement>('.gallery button').forEach((tlacitko) => {
+      tlacitko.addEventListener('click', () => {
+        velkyObrazek.src = tlacitko.dataset.full ?? '';
+        dialog.showModal();
+      });
+    });
+
+    dialog.querySelector('.close')!.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (udalost) => {
+      if (udalost.target === dialog) dialog.close();
+    });
+  </script>
+</Layout>

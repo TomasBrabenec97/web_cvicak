@@ -1,0 +1,48 @@
+---
+import Layout from '../layouts/Layout.astro';
+import kurzy from '../data/kurzy.json';
+
+const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+---
+
+<Layout title="Kurzy" description="Výcvikové kurzy ZKO Nupaky – štěňata, začátečníci, pokročilí, sportovky i pachové práce.">
+  <section class="section">
+    <div class="container">
+      <h1>Naše výcvikové kurzy</h1>
+      <p class="lead">{kurzy.uvod}</p>
+
+      <h2 class="section-title" style="margin-top: 2.5rem;">Nabídka kurzů</h2>
+      <div class="grid grid-2">
+        {kurzy.kurzy.map((kurz) => (
+          <article class="card">
+            <h3>{kurz.nazev}</h3>
+            <p class="muted">{kurz.popis}</p>
+            <span class="badge">{kurz.termin}</span>
+          </article>
+        ))}
+      </div>
+
+      <div class="grid grid-2" style="margin-top: 2.5rem;">
+        <div class="card">
+          <h3>Cena</h3>
+          <p style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.3rem;">{kurzy.cena}</p>
+          <p class="muted">{kurzy.individualni}</p>
+        </div>
+        <div class="card">
+          <h3>Podmínky účasti</h3>
+          <ul style="margin: 0; padding-left: 1.2rem;">
+            {kurzy.podminky.map((p) => <li>{p}</li>)}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <h2>Přihlášení do kurzu</h2>
+      <p class="muted">{kurzy.prihlaseni}</p>
+      <a class="btn" href={`${base}/kontakty/`}>Všechny kontakty</a>
+    </div>
+  </section>
+</Layout>

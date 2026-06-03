@@ -1,0 +1,97 @@
+---
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+import kontakty from '../data/kontakty.json';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Základní kynologická organizace Nupaky (ZKO č. 653) – výcvik psů pro začátečníky i pokročilé. Kdo si hraje, nezlobí!',
+} = Astro.props;
+
+const fullTitle = title ? `${title} · ZKO Nupaky` : 'ZKO Nupaky – kynologické cvičiště';
+
+const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+const nav = [
+  { href: `${base}/`, label: 'Úvod' },
+  { href: `${base}/aktuality/`, label: 'Aktuality' },
+  { href: `${base}/kurzy/`, label: 'Kurzy' },
+  { href: `${base}/instruktori/`, label: 'Instruktoři' },
+  { href: `${base}/fotoalbum/`, label: 'Fotoalbum' },
+  { href: `${base}/kontakty/`, label: 'Kontakty' },
+];
+
+const path = Astro.url.pathname.replace(/\/+$/, '') + '/';
+const isActive = (href: string) =>
+  href === `${base}/` ? path === `${base}/` : path.startsWith(href);
+
+const rok = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" href={`${base}/`}>
+          <svg width="26" height="26" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
+            <ellipse cx="24" cy="38" rx="10" ry="13" transform="rotate(-20 24 38)" />
+            <ellipse cx="44" cy="26" rx="10" ry="13" transform="rotate(-6 44 26)" />
+            <ellipse cx="64" cy="27" rx="10" ry="13" transform="rotate(8 64 27)" />
+            <ellipse cx="82" cy="41" rx="9" ry="12" transform="rotate(24 82 41)" />
+            <path d="M52 44c14 0 26 10 29 23 2 9-4 16-13 16-6 0-10-3-16-3s-10 3-16 3c-9 0-15-7-13-16 3-13 15-23 29-23z" />
+          </svg>
+          ZKO Nupaky
+        </a>
+        <nav class="site-nav" aria-label="Hlavní navigace">
+          {nav.map((item) => (
+            <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="cols">
+          <div>
+            <h4>ZKO Nupaky</h4>
+            <p>Základní kynologická organizace č. 653</p>
+            <p>Pobočný spolek <a href="https://www.kynologie.cz/" rel="noopener">Českého kynologického svazu</a></p>
+          </div>
+          <div>
+            <h4>Kontakt</h4>
+            <p><a href={`mailto:${kontakty.email}`}>{kontakty.email}</a></p>
+            <p>{kontakty.misto}</p>
+          </div>
+          <div>
+            <h4>Výcvik</h4>
+            <p><a href={`${base}/kurzy/`}>Nabídka kurzů</a></p>
+            <p><a href={`${base}/kontakty/`}>Kde nás najdete</a></p>
+          </div>
+        </div>
+        <p class="legal">© {rok} ZKO Nupaky · Kdo si hraje, nezlobí.</p>
+      </div>
+    </footer>
+  </body>
+</html>

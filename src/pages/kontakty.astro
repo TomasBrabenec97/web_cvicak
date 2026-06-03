@@ -1,0 +1,50 @@
+---
+import Layout from '../layouts/Layout.astro';
+import kontakty from '../data/kontakty.json';
+
+const { lat, lon } = kontakty.gps;
+const d = 0.008;
+const bbox = `${lon - d},${lat - d},${lon + d},${lat + d}`;
+const osmEmbed = `https://www.openstreetmap.org/export/embed.html?bbox=${encodeURIComponent(bbox)}&layer=mapnik&marker=${lat}%2C${lon}`;
+const mapyCz = `https://mapy.cz/zakladni?q=${lat}%2C${lon}&z=16`;
+const googleMaps = `https://www.google.com/maps?q=${lat},${lon}`;
+
+const telOdkaz = (telefon: string) => `tel:+420${telefon.replace(/\s/g, '')}`;
+---
+
+<Layout title="Kontakty" description="Kontakty na ZKO Nupaky – výbor organizace, e-mail a mapa cvičiště.">
+  <section class="section">
+    <div class="container">
+      <h1>Kontakty</h1>
+
+      <div class="grid grid-2" style="margin-top: 2rem;">
+        {kontakty.osoby.map((osoba) => (
+          <div class="card contact-card">
+            <span class="role">{osoba.role}</span>
+            <h3>{osoba.jmeno}</h3>
+            <a href={telOdkaz(osoba.telefon)}>{osoba.telefon}</a>
+          </div>
+        ))}
+        <div class="card contact-card">
+          <span class="role">E-mail a platby</span>
+          <h3>ZKO Nupaky</h3>
+          <a href={`mailto:${kontakty.email}`}>{kontakty.email}</a>
+          <span class="muted">č. účtu: {kontakty.ucet}</span>
+        </div>
+      </div>
+
+      <h2 class="section-title" style="margin-top: 3rem;">Kde nás najdete</h2>
+      <p class="lead" style="margin-bottom: 1.5rem;">{kontakty.misto}</p>
+      <iframe
+        class="map-frame"
+        src={osmEmbed}
+        title={`Mapa – ${kontakty.misto}`}
+        loading="lazy"
+      ></iframe>
+      <p style="margin-top: 0.8rem;">
+        Otevřít na <a href={mapyCz} rel="noopener">Mapy.cz</a> ·
+        <a href={googleMaps} rel="noopener">Google Maps</a>
+      </p>
+    </div>
+  </section>
+</Layout>

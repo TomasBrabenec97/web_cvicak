@@ -1,0 +1,96 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import kurzy from '../data/kurzy.json';
+
+const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+
+const aktuality = (await getCollection('aktuality'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const datum = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Layout>
+  <section class="hero">
+    <div class="container">
+      <span class="eyebrow">Základní kynologická organizace č. 653</span>
+      <h1>Kdo si hraje, nezlobí.</h1>
+      <p class="lead">
+        Jsme kynologické cvičiště v Nupakách u Prahy. Zvedněte své čtyřnohé parťáky
+        z gaučů a přijďte si k nám společně zacvičit – od štěňat po sportovní výcvik.
+      </p>
+      <div class="actions">
+        <a class="btn" href={`${base}/kurzy/`}>Prohlédnout kurzy</a>
+        <a class="btn btn-ghost" href={`${base}/kontakty/`}>Kontaktovat nás</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="o-nas">
+    <div class="container">
+      <h2 class="section-title">O nás</h2>
+      <div class="prose">
+        <p>
+          Jsme pobočnou organizací <a href="https://www.kynologie.cz/" rel="noopener">Českého kynologického svazu</a>.
+          Naše historie sahá do roku 2000, kdy jsme vznikli jako ZKO Praha 10 – Uhříněves
+          se sídlem v areálu Kynologického centra Rychety. Po změně majitele v únoru 2026
+          jsme museli své původní zázemí opustit a začít budovat vše od nuly „na zelené louce“.
+        </p>
+        <p>
+          I když jsme menší organizace, naše odhodlání k výcviku psů nepolevuje. Naši
+          instruktoři jsou zkušení kynologové, kteří se opakovaně účastnili Mistrovství
+          světa ve sportovní kynologii.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="kurzy">
+    <div class="container">
+      <h2 class="section-title">Co u nás můžete trénovat</h2>
+      <div class="grid grid-2">
+        {kurzy.kurzy.map((kurz) => (
+          <article class="card">
+            <h3>{kurz.nazev}</h3>
+            <p class="muted">{kurz.popis}</p>
+            <span class="badge">{kurz.termin}</span>
+          </article>
+        ))}
+      </div>
+      <p style="margin-top: 1.5rem;">
+        <a href={`${base}/kurzy/`}>Podrobnosti o kurzech a cenách →</a>
+      </p>
+    </div>
+  </section>
+
+  {aktuality.length > 0 && (
+    <section class="section" id="aktuality">
+      <div class="container">
+        <h2 class="section-title">Aktuality</h2>
+        <div class="post-list">
+          {aktuality.map((post) => (
+            <article class="post-card">
+              <time datetime={post.data.date.toISOString()}>{datum.format(post.data.date)}</time>
+              <h3><a href={`${base}/aktuality/${post.id}/`}>{post.data.title}</a></h3>
+            </article>
+          ))}
+        </div>
+        <p style="margin-top: 1.5rem;">
+          <a href={`${base}/aktuality/`}>Všechny aktuality →</a>
+        </p>
+      </div>
+    </section>
+  )}
+
+  <section class="cta-band">
+    <div class="container">
+      <h2>Chcete se přidat?</h2>
+      <p class="muted" style="max-width: 36rem; margin-inline: auto;">
+        {kurzy.prihlaseni} Stačí platné očkování psa a dobrá nálada.
+      </p>
+      <a class="btn" href={`${base}/kontakty/`}>Ozvěte se nám</a>
+    </div>
+  </section>
+</Layout>

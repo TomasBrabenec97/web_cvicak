@@ -1,0 +1,157 @@
+# Konfigurace Pages CMS (https://pagescms.org)
+# Díky tomuto souboru mohou členové klubu upravovat obsah webu
+# přes jednoduché webové rozhraní na https://app.pagescms.org
+
+media:
+  - name: galerie
+    label: Fotogalerie
+    input: src/assets/galerie
+    output: /src/assets/galerie
+    extensions: [jpg, jpeg, png, webp]
+  - name: aktuality
+    label: Obrázky k aktualitám
+    input: src/assets/aktuality
+    output: /src/assets/aktuality
+    extensions: [jpg, jpeg, png, webp]
+  - name: instruktori
+    label: Fotky instruktorů
+    input: src/assets/instruktori
+    output: /src/assets/instruktori
+    extensions: [jpg, jpeg, png, webp]
+
+content:
+  - name: aktuality
+    label: Aktuality
+    description: Novinky a oznámení – zobrazují se na úvodní stránce a v sekci Aktuality.
+    type: collection
+    path: src/content/aktuality
+    filename: '{year}-{month}-{day}-{fields.title}.md'
+    view:
+      fields: [title, date]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Titulek
+        type: string
+        required: true
+      - name: date
+        label: Datum
+        type: date
+        required: true
+      - name: obrazek
+        label: Obrázek (volitelný)
+        type: image
+        options:
+          media: aktuality
+      - name: body
+        label: Text příspěvku
+        type: rich-text
+
+  - name: instruktori
+    label: Instruktoři
+    description: Medailonky instruktorů na stránce Instruktoři.
+    type: collection
+    path: src/content/instruktori
+    view:
+      fields: [title, role]
+    fields:
+      - name: title
+        label: Jméno
+        type: string
+        required: true
+      - name: role
+        label: Funkce (např. Výcvikářka ZKO)
+        type: string
+      - name: foto
+        label: Fotografie
+        type: image
+        options:
+          media: instruktori
+      - name: poradi
+        label: Pořadí na stránce (1 = první)
+        type: number
+        default: 99
+      - name: body
+        label: Medailonek
+        type: rich-text
+
+  - name: kurzy
+    label: Kurzy a ceny
+    description: Obsah stránky Kurzy – nabídka, ceny a podmínky.
+    type: file
+    path: src/data/kurzy.json
+    fields:
+      - name: uvod
+        label: Úvodní text
+        type: text
+      - name: prihlaseni
+        label: Jak se přihlásit
+        type: string
+      - name: kurzy
+        label: Nabídka kurzů
+        type: object
+        list: true
+        fields:
+          - name: nazev
+            label: Název kurzu
+            type: string
+            required: true
+          - name: popis
+            label: Popis
+            type: string
+          - name: termin
+            label: Termín (např. „neděle a středa od 18:00“)
+            type: string
+      - name: cena
+        label: Cena kurzu
+        type: string
+      - name: individualni
+        label: Individuální hodiny
+        type: string
+      - name: podminky
+        label: Podmínky účasti
+        type: string
+        list: true
+
+  - name: kontakty
+    label: Kontakty
+    description: Kontaktní osoby, e-mail, číslo účtu a poloha cvičiště.
+    type: file
+    path: src/data/kontakty.json
+    fields:
+      - name: email
+        label: E-mail
+        type: string
+      - name: ucet
+        label: Číslo účtu
+        type: string
+      - name: misto
+        label: Místo (zobrazuje se u mapy a v patičce)
+        type: string
+      - name: gps
+        label: GPS souřadnice cvičiště
+        type: object
+        fields:
+          - name: lat
+            label: Zeměpisná šířka (lat)
+            type: number
+          - name: lon
+            label: Zeměpisná délka (lon)
+            type: number
+      - name: osoby
+        label: Kontaktní osoby
+        type: object
+        list: true
+        fields:
+          - name: jmeno
+            label: Jméno
+            type: string
+            required: true
+          - name: role
+            label: Funkce
+            type: string
+          - name: telefon
+            label: Telefon (např. 603 323 379)
+            type: string

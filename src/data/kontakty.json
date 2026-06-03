@@ -1,0 +1,23 @@
+{
+  "email": "zkonupaky@seznam.cz",
+  "ucet": "2603494440/2010",
+  "misto": "Areál Burzy Nupaky, Nupaky (Praha-východ)",
+  "gps": { "lat": 50.0022468, "lon": 14.603737 },
+  "osoby": [
+    {
+      "jmeno": "Monika Olmrová",
+      "role": "Předsedkyně ZKO",
+      "telefon": "603 323 379"
+    },
+    {
+      "jmeno": "Ilona Procházková",
+      "role": "Výcvikářka ZKO",
+      "telefon": "602 875 309"
+    },
+    {
+      "jmeno": "Martina Bartůšková",
+      "role": "Jednatelka ZKO",
+      "telefon": "720 752 348"
+    }
+  ]
+}

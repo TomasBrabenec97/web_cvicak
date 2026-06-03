@@ -1,0 +1,64 @@
+---
+import type { ImageMetadata } from 'astro';
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+
+const instruktori = (await getCollection('instruktori')).sort(
+  (a, b) => a.data.poradi - b.data.poradi,
+);
+
+// Fotky dohledáme podle názvu souboru z frontmatteru (funguje i s cestami z CMS)
+const fotky = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/instruktori/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}',
+  { eager: true },
+);
+
+const najdiFoto = (foto?: string) => {
+  const nazev = foto?.split('/').pop();
+  if (!nazev) return undefined;
+  return Object.entries(fotky).find(([cesta]) => cesta.endsWith(`/${nazev}`))?.[1].default;
+};
+
+const profily = await Promise.all(
+  instruktori.map(async (clovek) => ({
+    data: clovek.data,
+    foto: najdiFoto(clovek.data.foto),
+    Content: (await render(clovek)).Content,
+  })),
+);
+---
+
+<Layout title="Instruktoři" description="Tým instruktorů ZKO Nupaky – zkušení kynologové s účastí na mistrovstvích světa.">
+  <section class="section">
+    <div class="container">
+      <h1>Náš tým instruktorů</h1>
+      <p class="lead">
+        Za kvalitou našeho výcviku stojí zkušení kynologové, kteří své znalosti
+        pravidelně potvrzují na domácích i mezinárodních soutěžích.
+      </p>
+
+      <div style="margin-top: 1.5rem;">
+        {profily.map(({ data, foto, Content }) => (
+          <article class="instructor">
+            {foto && (
+              <Image
+                src={foto}
+                alt={data.title}
+                widths={[240, 480]}
+                sizes="(max-width: 640px) 260px, 240px"
+              />
+            )}
+            <div>
+              <h2>{data.title}</h2>
+              {data.role && <p class="role">{data.role}</p>}
+              <div class="prose">
+                <Content />
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
