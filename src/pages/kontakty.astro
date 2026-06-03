@@ -3,9 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import kontakty from '../data/kontakty.json';
 
 const { lat, lon } = kontakty.gps;
-const d = 0.008;
-const bbox = `${lon - d},${lat - d},${lon + d},${lat + d}`;
-const osmEmbed = `https://www.openstreetmap.org/export/embed.html?bbox=${encodeURIComponent(bbox)}&layer=mapnik&marker=${lat}%2C${lon}`;
+const googleEmbed = `https://www.google.com/maps?q=${lat},${lon}&z=14&hl=cs&output=embed`;
 const mapyCz = `https://mapy.cz/zakladni?q=${lat}%2C${lon}&z=16`;
 const googleMaps = `https://www.google.com/maps?q=${lat},${lon}`;
 
@@ -37,9 +35,10 @@ const telOdkaz = (telefon: string) => `tel:+420${telefon.replace(/\s/g, '')}`;
       <p class="lead" style="margin-bottom: 1.5rem;">{kontakty.misto}</p>
       <iframe
         class="map-frame"
-        src={osmEmbed}
+        src={googleEmbed}
         title={`Mapa – ${kontakty.misto}`}
         loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
       ></iframe>
       <p style="margin-top: 0.8rem;">
         Otevřít na <a href={mapyCz} rel="noopener">Mapy.cz</a> ·

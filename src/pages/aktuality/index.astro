@@ -9,6 +9,17 @@ const posts = (await getCollection('aktuality')).sort(
 );
 
 const datum = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' });
+
+// Náhled: prostý text z markdownu, zkrácený na celá slova
+const nahled = (text: string, max = 180) => {
+  const plain = text
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '') // obrázky pryč
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1') // odkazy → jen text
+    .replace(/[*_`#>]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return plain.length > max ? plain.slice(0, max).replace(/\s+\S*$/, '') + '…' : plain;
+};
 ---
 
 <Layout title="Aktuality" description="Novinky a oznámení ze ZKO Nupaky.">
@@ -22,6 +33,8 @@ const datum = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'long', 
           <article class="post-card">
             <time datetime={post.data.date.toISOString()}>{datum.format(post.data.date)}</time>
             <h3><a href={`${base}/aktuality/${post.id}/`}>{post.data.title}</a></h3>
+            <p class="excerpt">{nahled(post.body ?? '')}</p>
+            <a class="more" href={`${base}/aktuality/${post.id}/`}>Číst celé →</a>
           </article>
         ))}
       </div>
