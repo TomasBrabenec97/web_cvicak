@@ -8,5 +8,5 @@ import { defineConfig } from 'astro/config';
 // nastavte `site` na doménu a `base` smažte.
 export default defineConfig({
   site: 'https://TomasBrabenec97.github.io',
-  base: '/zko-nupaky',
+  base: '/web_cvicak',
 });
