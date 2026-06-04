@@ -1,0 +1,19 @@
+# Povolí merge do main pouze z větve dev
+name: Restrict Main Merges
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check source branch
+        run: |
+          if [ "${{ github.head_ref }}" != "dev" ]; then
+            echo "Only dev can be merged into main (got: ${{ github.head_ref }})"
+            exit 1
+          fi
+          echo "Source branch is dev — OK"
