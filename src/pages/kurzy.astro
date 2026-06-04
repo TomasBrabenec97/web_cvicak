@@ -16,9 +16,8 @@ const iso = (d: Date) => d.toISOString().slice(0, 10);
 const datumKratce = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric' });
 
 const zmeny = (await getCollection('aktuality'))
-  .flatMap((post) =>
-    post.data.zmenaProvozu ? [{ id: post.id, title: post.data.title, ...post.data.zmenaProvozu }] : [],
-  )
+  .filter((post) => post.data.typ === 'zmena-provozu' && post.data.od && post.data.do)
+  .map((post) => ({ id: post.id, title: post.data.title, od: post.data.od!, do: post.data.do! }))
   .filter((z) => konecDne(z.do) >= dnes && z.od <= horizont)
   .sort((a, b) => a.od.valueOf() - b.od.valueOf());
 

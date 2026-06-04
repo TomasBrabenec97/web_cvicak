@@ -14,6 +14,20 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 
 const datum = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' });
+const datumKratce = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric' });
+
+// Štítek s termínem u akcí a změn provozu (oznámení ho nemá)
+const TYPY: Record<string, { nazev: string; badge: string }> = {
+  'zmena-provozu': { nazev: 'Změna provozu', badge: 'badge-zmena' },
+  akce: { nazev: 'Akce', badge: 'badge-akce' },
+};
+const typ = TYPY[post.data.typ];
+const rozsah =
+  post.data.od && post.data.do
+    ? post.data.od.valueOf() === post.data.do.valueOf()
+      ? datumKratce.format(post.data.od)
+      : `${datumKratce.format(post.data.od)} – ${datumKratce.format(post.data.do)}`
+    : undefined;
 
 // Obrázek příspěvku: v CMS se ukládá cesta, tady ji dohledáme podle názvu souboru
 const obrazky = import.meta.glob<{ default: ImageMetadata }>(
@@ -31,6 +45,9 @@ const obrazek = nazevSouboru
     <div class="container">
       <p><a href={`${base}/aktuality/`}>← Zpět na aktuality</a></p>
       <time class="muted" datetime={post.data.date.toISOString()}>{datum.format(post.data.date)}</time>
+      {typ && rozsah && (
+        <span class:list={['badge', typ.badge]} style="margin-left: 0.7rem;">{typ.nazev} · {rozsah}</span>
+      )}
       <h1>{post.data.title}</h1>
       {obrazek && (
         <Image

@@ -17,6 +17,7 @@
   --kurz-3: #a3742c; /* okrová */
   --kurz-4: #7c5878; /* švestková */
   --warn: #a0512f; /* terakotová – upozornění na změny provozu */
+  --akce: #3d6386; /* modrošedá – jednorázové akce a události */
   --radius: 14px;
   --shadow: 0 1px 2px rgb(32 37 31 / 0.05), 0 8px 24px -12px rgb(32 37 31 / 0.12);
 }
@@ -75,7 +76,14 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .section {
-  padding-block: 3.5rem;
+  padding-block: 3rem;
+}
+
+/* po sobě jdoucí sekce: mezeru tvoří jen spodní okraj té předchozí,
+   ať se odsazení nesčítá do dvojnásobné mezery */
+.section + .section,
+.hero + .section {
+  padding-top: 0;
 }
 
 .section-title {
@@ -178,7 +186,7 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* ===== Hero ===== */
 .hero {
-  padding-block: 4.5rem 3.5rem;
+  padding-block: 4.5rem 3rem;
 }
 
 .hero .eyebrow {
@@ -398,6 +406,37 @@ img { max-width: 100%; height: auto; display: block; }
 
 .post-card .more:hover { text-decoration: underline; }
 
+/* ===== Filtr aktualit podle typu ===== */
+.filtr {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.filtr-btn {
+  padding: 0.35rem 0.95rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filtr-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent-dark);
+}
+
+.filtr-btn.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
 /* ===== Změny provozu (aktuality ↔ kurzy) ===== */
 .post-card .meta {
   display: flex;
@@ -414,14 +453,22 @@ img { max-width: 100%; height: auto; display: block; }
 
 .post-card-zmena { border-left: 4px solid var(--warn); }
 
-/* uplynulá změna: zašedlá a potlačená */
-.post-card-zmena.is-past {
+/* ===== Akce (jednorázové události) ===== */
+.badge-akce {
+  background: color-mix(in srgb, var(--akce) 12%, white);
+  color: color-mix(in srgb, var(--akce) 80%, black);
+}
+
+.post-card-akce { border-left: 4px solid var(--akce); }
+
+/* uplynulá změna či akce: zašedlá a potlačená */
+.post-card.is-past {
   border-left-color: #c8c5bb;
   background: #f3f2ed;
   opacity: 0.6;
 }
 
-.post-card-zmena.is-past .badge-zmena {
+.post-card.is-past .badge {
   background: #e8e6df;
   color: var(--muted);
 }

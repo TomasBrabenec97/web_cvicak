@@ -11,10 +11,22 @@ const posts = (await getCollection('aktuality')).sort(
 const datum = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' });
 const datumKratce = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric' });
 
-// Změny provozu: do konce platnosti zvýrazněné, potom zašedlé
+// Akce a změny provozu: do konce platnosti zvýrazněné, potom zašedlé
 const dnes = new Date();
 const konecDne = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59);
 const iso = (d: Date) => d.toISOString().slice(0, 10);
+
+// Vzhled karet podle typu příspěvku (oznámení = obyčejná karta)
+const TYPY: Record<string, { nazev: string; karta: string; badge: string }> = {
+  'zmena-provozu': { nazev: 'Změna provozu', karta: 'post-card-zmena', badge: 'badge-zmena' },
+  akce: { nazev: 'Akce', karta: 'post-card-akce', badge: 'badge-akce' },
+};
+
+// Rozsah dat: jednodenní akce se ukáže jako jedno datum
+const rozsah = (od: Date, doKdy: Date) =>
+  od.valueOf() === doKdy.valueOf()
+    ? datumKratce.format(od)
+    : `${datumKratce.format(od)} – ${datumKratce.format(doKdy)}`;
 
 // Náhled: prostý text z markdownu, zkrácený na celá slova
 const nahled = (text: string, max = 180) => {
@@ -34,20 +46,29 @@ const nahled = (text: string, max = 180) => {
       <h1>Aktuality</h1>
       <p class="lead">Novinky a oznámení z našeho cvičiště.</p>
 
-      <div class="post-list" style="margin-top: 2rem;">
+      <div class="filtr" role="group" aria-label="Filtr aktualit podle typu">
+        <button class="filtr-btn is-active" data-typ="vse">Vše</button>
+        <button class="filtr-btn" data-typ="oznameni">Oznámení</button>
+        <button class="filtr-btn" data-typ="akce">Akce</button>
+        <button class="filtr-btn" data-typ="zmena-provozu">Změny provozu</button>
+      </div>
+
+      <div class="post-list" style="margin-top: 1.5rem;">
         {posts.map((post) => {
-          const zmena = post.data.zmenaProvozu;
-          const probehla = zmena ? konecDne(zmena.do) < dnes : false;
+          const typ = TYPY[post.data.typ];
+          const maData = typ && post.data.od && post.data.do;
+          const probehla = maData ? konecDne(post.data.do!) < dnes : false;
           return (
             <article
-              class:list={['post-card', { 'post-card-zmena': !!zmena, 'is-past': probehla }]}
-              data-do={zmena ? iso(zmena.do) : undefined}
+              class:list={['post-card', typ?.karta, { 'is-past': probehla }]}
+              data-typ={post.data.typ}
+              data-do={maData ? iso(post.data.do!) : undefined}
             >
               <div class="meta">
                 <time datetime={post.data.date.toISOString()}>{datum.format(post.data.date)}</time>
-                {zmena && (
-                  <span class="badge badge-zmena">
-                    Změna provozu · {datumKratce.format(zmena.od)} – {datumKratce.format(zmena.do)}
+                {maData && (
+                  <span class:list={['badge', typ.badge]}>
+                    {typ.nazev} · {rozsah(post.data.od!, post.data.do!)}
                   </span>
                 )}
               </div>
@@ -65,9 +86,21 @@ const nahled = (text: string, max = 180) => {
     // Pojistka mezi nasazeními: stav „už neplatí“ se přepočítá i v prohlížeči,
     // aby zašednutí nezáviselo jen na datu posledního buildu
     const dnes = new Date();
-    document.querySelectorAll<HTMLElement>('.post-card-zmena[data-do]').forEach((karta) => {
+    document.querySelectorAll<HTMLElement>('.post-card[data-do]').forEach((karta) => {
       const konec = new Date(`${karta.dataset.do}T23:59:59`);
       karta.classList.toggle('is-past', konec < dnes);
+    });
+
+    // Filtr podle typu příspěvku
+    const tlacitka = document.querySelectorAll<HTMLElement>('.filtr-btn');
+    const karty = document.querySelectorAll<HTMLElement>('.post-card[data-typ]');
+    tlacitka.forEach((tlacitko) => {
+      tlacitko.addEventListener('click', () => {
+        tlacitka.forEach((t) => t.classList.toggle('is-active', t === tlacitko));
+        karty.forEach((karta) => {
+          karta.hidden = tlacitko.dataset.typ !== 'vse' && karta.dataset.typ !== tlacitko.dataset.typ;
+        });
+      });
     });
   </script>
 </Layout>
