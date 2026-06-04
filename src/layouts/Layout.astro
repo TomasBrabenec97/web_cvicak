@@ -13,7 +13,10 @@ const {
   description = 'Základní kynologická organizace Nupaky (ZKO č. 653) – výcvik psů pro začátečníky i pokročilé. Kdo si hraje, nezlobí!',
 } = Astro.props;
 
-const fullTitle = title ? `${title} · ZKO Nupaky` : 'ZKO Nupaky – kynologické cvičiště';
+const fullTitle = title ? `${title} · ZKO Nupaky` : 'ZKO Nupaky – kynologické cvičiště u Prahy';
+
+// Kanonická adresa stránky pro vyhledávače (site z astro.config.mjs)
+const canonical = new URL(Astro.url.pathname, Astro.site);
 
 const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
 const nav = [
@@ -39,10 +42,12 @@ const rok = new Date().getFullYear();
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
   </head>
   <body>
     <header class="site-header">
