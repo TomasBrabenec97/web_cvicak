@@ -27,7 +27,7 @@ content:
     path: src/content/aktuality
     filename: '{year}-{month}-{day}-{fields.title}.md'
     view:
-      fields: [title, date]
+      fields: [title, typ, date]
       default:
         sort: date
         order: desc
@@ -36,10 +36,30 @@ content:
         label: Titulek
         type: string
         required: true
+      - name: typ
+        label: Typ příspěvku
+        description: Oznámení je prostá zpráva. Akce a změna provozu musí mít vyplněno „od“ a „do“ – akce se ukazuje na úvodní stránce s odpočtem, změna provozu na stránce Kurzy.
+        type: select
+        default: oznameni
+        required: true
+        options:
+          values:
+            - value: oznameni
+              label: Oznámení
+            - value: akce
+              label: Akce
+            - value: zmena-provozu
+              label: Změna provozu
       - name: date
         label: Datum
         type: date
         required: true
+      - name: od
+        label: Od (jen akce a změna provozu)
+        type: date
+      - name: do
+        label: Do (poslední den včetně)
+        type: date
       - name: obrazek
         label: Obrázek (volitelný)
         type: image

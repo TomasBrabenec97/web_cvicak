@@ -12,3 +12,4 @@ node_modules/
 # lokální pracovní soubory (stará verze webu, stažené originály)
 _archive/
 _downloads/
+.local/
