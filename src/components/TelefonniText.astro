@@ -1,0 +1,14 @@
+---
+// Vykreslí text z CMS a telefonní čísla ve tvaru „602 875 309"
+// automaticky změní na klikací tel: odkazy (stejně jako na Kontaktech)
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+
+// split se zachycující skupinou: liché indexy jsou telefonní čísla
+const casti = text.split(/(\d{3}\s?\d{3}\s?\d{3})/);
+---
+
+{casti.map((cast, i) => (i % 2 ? <a href={`tel:+420${cast.replace(/\s/g, '')}`}>{cast}</a> : cast))}

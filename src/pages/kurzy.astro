@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import TelefonniText from '../components/TelefonniText.astro';
 import kurzy from '../data/kurzy.json';
 
 const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
@@ -56,6 +57,32 @@ const tyden = DNY.map((den) => ({
         </aside>
       ))}
 
+      <aside class="course-info">
+        <div>
+          <span class="course-info-label">Cena</span>
+          <ul class="price-options">
+            {kurzy.cenik.map((c) => (
+              <li class="price-option">
+                <div class="price-option-head">
+                  <span class="price-option-name">{c.nazev}</span>
+                  <span class="price-option-value">{c.cena}</span>
+                </div>
+                {c.poznamka && <span class="price-option-note muted">{c.poznamka}</span>}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <span class="course-info-label">Podmínky účasti</span>
+          <ul>
+            {/* Text mezi ** se zvýrazní (viz .pages.yml) */}
+            {kurzy.podminky.map((p) => (
+              <li>{p.split('**').map((cast, i) => (i % 2 ? <strong>{cast}</strong> : cast))}</li>
+            ))}
+          </ul>
+        </div>
+      </aside>
+
       <h2 class="section-title" style="margin-top: 2.5rem;">Nabídka kurzů</h2>
       <div class="grid grid-2">
         {kurzy.kurzy.map((kurz, i) => (
@@ -82,26 +109,13 @@ const tyden = DNY.map((den) => ({
         ))}
       </div>
 
-      <div class="grid grid-2" style="margin-top: 2.5rem;">
-        <div class="card">
-          <h3>Cena</h3>
-          <p style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.3rem;">{kurzy.cena}</p>
-          <p class="muted">{kurzy.individualni}</p>
-        </div>
-        <div class="card">
-          <h3>Podmínky účasti</h3>
-          <ul style="margin: 0; padding-left: 1.2rem;">
-            {kurzy.podminky.map((p) => <li>{p}</li>)}
-          </ul>
-        </div>
-      </div>
     </div>
   </section>
 
   <section class="cta-band">
     <div class="container">
       <h2>Přihlášení do kurzu</h2>
-      <p class="muted">{kurzy.prihlaseni}</p>
+      <p class="muted"><TelefonniText text={kurzy.prihlaseni} /></p>
       <a class="btn" href={`${base}/kontakty/`}>Všechny kontakty</a>
     </div>
   </section>

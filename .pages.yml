@@ -104,14 +104,25 @@ content:
           - name: termin
             label: Termín (např. „neděle a středa od 18:00“)
             type: string
-      - name: cena
-        label: Cena kurzu
-        type: string
-      - name: individualni
-        label: Individuální hodiny
-        type: string
+      - name: cenik
+        label: Ceník
+        type: object
+        list: true
+        fields:
+          - name: nazev
+            label: Varianta (např. „Kurz (10 lekcí)“)
+            type: string
+            required: true
+          - name: cena
+            label: Cena (např. „4 000 Kč“)
+            type: string
+            required: true
+          - name: poznamka
+            label: Poznámka (volitelná, např. „zaváděcí cena“)
+            type: string
       - name: podminky
         label: Podmínky účasti
+        description: Text mezi dvěma hvězdičkami se na webu zvýrazní – např. **očkování**.
         type: string
         list: true
 

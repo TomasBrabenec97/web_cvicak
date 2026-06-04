@@ -35,10 +35,20 @@
       "rozvrh": []
     }
   ],
-  "cena": "4 000 Kč / 10 lekcí (zaváděcí cena)",
-  "individualni": "Individuální hodiny po dohodě s instruktorem – jednotná cena 600 Kč.",
+  "cenik": [
+    {
+      "nazev": "Kurz (10 lekcí)",
+      "cena": "4 000 Kč",
+      "poznamka": "zaváděcí cena"
+    },
+    {
+      "nazev": "Individuální hodina",
+      "cena": "600 Kč",
+      "poznamka": "po dohodě s instruktorem"
+    }
+  ],
   "podminky": [
-    "Platné povinné očkování psa (očkovací průkaz s sebou).",
+    "Platné povinné **očkování** psa (očkovací průkaz s sebou).",
     "Dobrá nálada."
   ]
 }

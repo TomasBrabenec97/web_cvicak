@@ -230,6 +230,79 @@ img { max-width: 100%; height: auto; display: block; }
   color: color-mix(in srgb, var(--kurz-color) 80%, black);
 }
 
+/* ===== Cena a podmínky účasti (kurzy) ===== */
+.course-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1.25rem 2.5rem;
+  margin-top: 1.8rem;
+  padding: 1.4rem 1.6rem;
+  background: var(--accent-tint);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, white);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius);
+}
+
+.course-info-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--accent-dark);
+  margin-bottom: 0.3rem;
+}
+
+.course-info ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+/* zvýraznění klíčových slov v podmínkách (**text** v kurzy.json) */
+.course-info li strong {
+  color: var(--accent-dark);
+}
+
+/* dvě cenové varianty: kurz / individuální hodina */
+.price-options {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.course-info ul.price-options {
+  padding: 0;
+  list-style: none;
+}
+
+.price-option {
+  padding: 0.55rem 0.85rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.price-option-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.price-option-name { font-weight: 600; }
+
+.price-option-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.price-option-note {
+  display: block;
+  font-size: 0.88rem;
+}
+
 /* ===== Týdenní rozvrh ===== */
 .schedule {
   display: grid;
