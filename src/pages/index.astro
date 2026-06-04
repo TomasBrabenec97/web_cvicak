@@ -6,11 +6,54 @@ import kurzy from '../data/kurzy.json';
 
 const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
 
-const aktuality = (await getCollection('aktuality'))
+const vsechny = await getCollection('aktuality');
+
+const aktuality = [...vsechny]
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
 
 const datum = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' });
+const datumKratce = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric' });
+
+const dnes = new Date();
+const zacatekDne = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const konecDne = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59);
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+
+// Oznámení: poslední 3, ne starší než 3 měsíce
+const hraniceOznameni = new Date(dnes);
+hraniceOznameni.setMonth(hraniceOznameni.getMonth() - 3);
+const oznameni = vsechny
+  .filter((post) => post.data.typ === 'oznameni' && post.data.date >= hraniceOznameni)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+// Nadcházející (i právě probíhající) akce, seřazené podle začátku
+const akce = vsechny
+  .filter((post) => post.data.typ === 'akce' && post.data.do && konecDne(post.data.do) >= dnes)
+  .sort((a, b) => a.data.od!.valueOf() - b.data.od!.valueOf());
+
+// Odpočet do začátku akce: měsíce nad 4 týdny, týdny nad 7 dní, jinak dny
+const odpocet = (od: Date) => {
+  const dni = Math.round((zacatekDne(od).valueOf() - zacatekDne(dnes).valueOf()) / 86_400_000);
+  if (dni <= 0) return 'právě probíhá';
+  if (dni > 28) {
+    const m = Math.round(dni / 30.44);
+    return `za ${m} ${m === 1 ? 'měsíc' : m < 5 ? 'měsíce' : 'měsíců'}`;
+  }
+  if (dni > 7) {
+    const t = Math.round(dni / 7);
+    return `za ${t} ${t === 1 ? 'týden' : t < 5 ? 'týdny' : 'týdnů'}`;
+  }
+  if (dni === 1) return 'zítra';
+  return `za ${dni} ${dni < 5 ? 'dny' : 'dní'}`;
+};
+
+// Rozsah dat: jednodenní akce se ukáže jako jedno datum
+const rozsah = (od: Date, doKdy: Date) =>
+  od.valueOf() === doKdy.valueOf()
+    ? datumKratce.format(od)
+    : `${datumKratce.format(od)} – ${datumKratce.format(doKdy)}`;
 
 // Stejné barvy kurzů jako na stránce Kurzy (--kurz-1 … --kurz-4 v global.css)
 const barva = (i: number) => `--kurz-color: var(--kurz-${(i % 4) + 1})`;
@@ -31,6 +74,41 @@ const barva = (i: number) => `--kurz-color: var(--kurz-${(i % 4) + 1})`;
       </div>
     </div>
   </section>
+
+  {oznameni.length > 0 && (
+    <section class="section" id="oznameni">
+      <div class="container">
+        <h2 class="section-title">Oznámení</h2>
+        <div class="post-list">
+          {oznameni.map((post) => (
+            <article class="post-card">
+              <time datetime={post.data.date.toISOString()}>{datum.format(post.data.date)}</time>
+              <h3><a href={`${base}/aktuality/${post.id}/`}>{post.data.title}</a></h3>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {akce.length > 0 && (
+    <section class="section" id="akce">
+      <div class="container">
+        <h2 class="section-title">Nadcházející akce</h2>
+        <div class="post-list">
+          {akce.map((post) => (
+            <article class="post-card post-card-akce" data-od={iso(post.data.od!)} data-do={iso(post.data.do!)}>
+              <div class="meta">
+                <time datetime={iso(post.data.od!)}>{rozsah(post.data.od!, post.data.do!)}</time>
+                <span class="badge badge-akce odpocet">{odpocet(post.data.od!)}</span>
+              </div>
+              <h3><a href={`${base}/aktuality/${post.id}/`}>{post.data.title}</a></h3>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <section class="section" id="o-nas">
     <div class="container">
@@ -97,4 +175,38 @@ const barva = (i: number) => `--kurz-color: var(--kurz-${(i % 4) + 1})`;
       <a class="btn" href={`${base}/kontakty/`}>Ozvěte se nám</a>
     </div>
   </section>
+
+  <script>
+    // Pojistka mezi nasazeními: odpočet do akce se přepočítá i v prohlížeči
+    // a skončené akce se skryjí, aby stav nezávisel na datu posledního buildu
+    const dnes = new Date();
+    const dnesDen = new Date(dnes.getFullYear(), dnes.getMonth(), dnes.getDate());
+    const karty = document.querySelectorAll<HTMLElement>('#akce .post-card[data-od]');
+    karty.forEach((karta) => {
+      const konec = new Date(`${karta.dataset.do}T23:59:59`);
+      if (konec < dnes) {
+        karta.hidden = true;
+        return;
+      }
+      const od = new Date(`${karta.dataset.od}T00:00:00`);
+      const dni = Math.round((od.valueOf() - dnesDen.valueOf()) / 86_400_000);
+      let text = 'právě probíhá';
+      if (dni > 28) {
+        const m = Math.round(dni / 30.44);
+        text = `za ${m} ${m === 1 ? 'měsíc' : m < 5 ? 'měsíce' : 'měsíců'}`;
+      } else if (dni > 7) {
+        const t = Math.round(dni / 7);
+        text = `za ${t} ${t === 1 ? 'týden' : t < 5 ? 'týdny' : 'týdnů'}`;
+      } else if (dni === 1) {
+        text = 'zítra';
+      } else if (dni > 0) {
+        text = `za ${dni} ${dni < 5 ? 'dny' : 'dní'}`;
+      }
+      const odpocet = karta.querySelector('.odpocet');
+      if (odpocet) odpocet.textContent = text;
+    });
+    // když mezitím skončily všechny akce, schová se celá sekce
+    const sekceAkce = document.getElementById('akce');
+    if (sekceAkce && [...karty].every((k) => k.hidden)) sekceAkce.hidden = true;
+  </script>
 </Layout>
