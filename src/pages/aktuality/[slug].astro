@@ -21,6 +21,15 @@ const TYPY: Record<string, { nazev: string; badge: string }> = {
   'zmena-provozu': { nazev: 'Změna provozu', badge: 'badge-zmena' },
   akce: { nazev: 'Akce', badge: 'badge-akce' },
 };
+// Popis pro vyhledávače: prostý text z markdownu, zkrácený na celá slova
+const plain = (post.body ?? '')
+  .replace(/!\[[^\]]*\]\([^)]*\)/g, '') // obrázky pryč
+  .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1') // odkazy → jen text
+  .replace(/[*_`#>]/g, '')
+  .replace(/\s+/g, ' ')
+  .trim();
+const popis = plain.length > 160 ? plain.slice(0, 160).replace(/\s+\S*$/, '') + '…' : plain;
+
 const typ = TYPY[post.data.typ];
 const rozsah =
   post.data.od && post.data.do
@@ -40,7 +49,7 @@ const obrazek = nazevSouboru
   : undefined;
 ---
 
-<Layout title={post.data.title}>
+<Layout title={post.data.title} description={popis || undefined}>
   <article class="section">
     <div class="container">
       <p><a href={`${base}/aktuality/`}>← Zpět na aktuality</a></p>
