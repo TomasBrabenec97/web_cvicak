@@ -2,7 +2,10 @@
   "email": "zkonupaky@seznam.cz",
   "ucet": "2603494440/2010",
   "misto": "Areál Burzy Nupaky, Nupaky (Praha-východ)",
-  "gps": { "lat": 50.0022468, "lon": 14.603737 },
+  "gps": {
+    "lat": 49.99922158238963,
+    "lon": 14.60357265768703
+  },
   "osoby": [
     {
       "jmeno": "Monika Olmrová",
