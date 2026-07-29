@@ -1,0 +1,11 @@
+---
+title: Otevíráme
+typ: oznameni
+date: 2026-08-02
+obrazek: /src/assets/aktuality/IMG-20260708-WA0003.jpg
+---
+Psí prázdniny končí
+
+Již tuto neděli 2.8.2026 otevíráme a budeme se na Vás těšit od 18:00 hod.
+
+Nový účastníci si prosím nezapomeňte očkovací průkaz ke kontrole.
