@@ -2,8 +2,8 @@
 title: Otevíráme
 typ: zmena-provozu
 date: 2026-07-29
-od: 2026-07-29
-do: 2026-07-29
+od: 2026-08-02
+do: 2026-09-02
 obrazek: /src/assets/aktuality/IMG-20260708-WA0003.jpg
 ---
 ### **Psí prázdniny končí.**
