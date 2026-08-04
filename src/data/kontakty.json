@@ -24,11 +24,13 @@
     },
     {
       "jmeno": "facebook",
-      "role": "https://www.facebook.com/profile.php?id=61592268138004"
+      "role": "facebook",
+      "telefon": "https://www.facebook.com/profile.php?id=61592268138004"
     },
     {
       "jmeno": "Instagram ",
-      "role": "https://www.instagram.com/stories/zkonupaky/"
+      "role": "Instagram ",
+      "telefon": "https://www.instagram.com/stories/zkonupaky/"
     }
   ]
 }
