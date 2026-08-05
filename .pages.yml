@@ -148,7 +148,7 @@ content:
 
   - name: kontakty
     label: Kontakty
-    description: Kontaktní osoby, e-mail, číslo účtu a poloha cvičiště.
+    description: Kontaktní osoby, e-mail, číslo účtu, sociální sítě a poloha cvičiště.
     type: file
     path: src/data/kontakty.json
     fields:
@@ -171,6 +171,16 @@ content:
           - name: lon
             label: Zeměpisná délka (lon)
             type: number
+      - name: socialniSite
+        label: Sociální sítě
+        type: object
+        fields:
+          - name: facebook
+            label: Facebook (celá adresa profilu)
+            type: string
+          - name: instagram
+            label: Instagram (celá adresa profilu)
+            type: string
       - name: osoby
         label: Kontaktní osoby
         type: object

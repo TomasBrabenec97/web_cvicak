@@ -605,6 +605,71 @@ img { max-width: 100%; height: auto; display: block; }
   box-shadow: var(--shadow);
 }
 
+/* ===== Sociální sítě ===== */
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.social-links svg { flex: none; }
+
+/* Úvodní stránka – odkazy pod tlačítky v hero sekci */
+.hero-social { margin-top: 1.5rem; }
+
+/* Patička – sítě pod sebou jako ostatní odkazy ve sloupcích */
+.site-footer .social-links {
+  flex-direction: column;
+  gap: 0.45rem;
+  align-items: flex-start;
+}
+
+/* Kontakty – zvýrazněný pruh, odlišený od bílých karet */
+.social-band {
+  margin-top: 2rem;
+  padding: 1.6rem 1.8rem;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow);
+}
+
+.social-band h2 {
+  font-size: 1.35rem;
+  margin-bottom: 0.15em;
+}
+
+.social-band .muted {
+  color: rgb(255 255 255 / 0.85);
+  margin: 0;
+}
+
+.social-band-links a {
+  color: #fff;
+  background: rgb(255 255 255 / 0.14);
+  border: 1px solid rgb(255 255 255 / 0.3);
+  border-radius: 999px;
+  padding: 0.45rem 1rem;
+}
+
+.social-band-links a:hover {
+  color: #fff;
+  background: rgb(255 255 255 / 0.26);
+}
+
 /* ===== CTA pruh ===== */
 .cta-band {
   background: var(--accent-tint);
