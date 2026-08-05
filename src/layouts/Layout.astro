@@ -2,6 +2,7 @@
 import '@fontsource-variable/inter';
 import '../styles/global.css';
 import kontakty from '../data/kontakty.json';
+import SocialniSite from '../components/SocialniSite.astro';
 
 interface Props {
   title?: string;
@@ -93,6 +94,10 @@ const rok = new Date().getFullYear();
             <h4>Výcvik</h4>
             <p><a href={`${base}/kurzy/`}>Nabídka kurzů</a></p>
             <p><a href={`${base}/kontakty/`}>Kde nás najdete</a></p>
+          </div>
+          <div>
+            <h4>Sledujte nás</h4>
+            <SocialniSite />
           </div>
         </div>
         <p class="legal">© {rok} ZKO Nupaky · Kdo si hraje, nezlobí.</p>

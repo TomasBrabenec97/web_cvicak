@@ -6,6 +6,10 @@
     "lat": 49.99922158238963,
     "lon": 14.60357265768703
   },
+  "socialniSite": {
+    "facebook": "https://www.facebook.com/profile.php?id=61592268138004",
+    "instagram": "https://www.instagram.com/zkonupaky/"
+  },
   "osoby": [
     {
       "jmeno": "Monika Olmrová",
@@ -21,16 +25,6 @@
       "jmeno": "Martina Bartůšková",
       "role": "Jednatelka ZKO",
       "telefon": "720 752 348"
-    },
-    {
-      "jmeno": "facebook",
-      "role": "facebook",
-      "telefon": "https://www.facebook.com/profile.php?id=61592268138004"
-    },
-    {
-      "jmeno": "Instagram ",
-      "role": "Instagram ",
-      "telefon": "https://www.instagram.com/stories/zkonupaky/"
     }
   ]
 }

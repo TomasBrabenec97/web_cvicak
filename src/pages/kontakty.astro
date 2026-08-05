@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import SocialniSite from '../components/SocialniSite.astro';
 import kontakty from '../data/kontakty.json';
 
 const { lat, lon } = kontakty.gps;
@@ -29,6 +30,14 @@ const telOdkaz = (telefon: string) => `tel:+420${telefon.replace(/\s/g, '')}`;
           <a href={`mailto:${kontakty.email}`}>{kontakty.email}</a>
           <span class="muted">č. účtu: {kontakty.ucet}</span>
         </div>
+      </div>
+
+      <div class="social-band">
+        <div>
+          <h2>Sledujte nás</h2>
+          <p class="muted">Fotky z výcviku, akce a novinky ze cvičiště najdete i na našich sítích.</p>
+        </div>
+        <SocialniSite class="social-band-links" />
       </div>
 
       <h2 class="section-title" style="margin-top: 3rem;">Kde nás najdete</h2>
