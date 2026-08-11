@@ -128,7 +128,13 @@ img { max-width: 100%; height: auto; display: block; }
   text-decoration: none;
 }
 
-.brand svg { color: var(--accent); }
+/* Logo má bílé pozadí – multiply ho nechá splynout s podkladem hlavičky */
+.brand img {
+  display: block;
+  width: auto;
+  height: 44px;
+  mix-blend-mode: multiply;
+}
 
 .site-nav {
   display: flex;
@@ -528,6 +534,40 @@ img { max-width: 100%; height: auto; display: block; }
   .instructor { grid-template-columns: 1fr; }
   .instructor img { max-width: 260px; }
 }
+
+/* ===== Podporují nás (sponzoři) ===== */
+.sponsor-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.sponsor-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 5.5rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.sponsor-logo img {
+  height: 3.5rem;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.sponsor-card .web {
+  margin-top: auto;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sponsor-card .web:hover { text-decoration: underline; }
 
 /* ===== Fotogalerie ===== */
 .gallery {

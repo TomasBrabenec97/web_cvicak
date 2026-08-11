@@ -48,4 +48,16 @@ const instruktori = defineCollection({
   }),
 });
 
-export const collections = { aktuality, instruktori };
+// Podporují nás – sponzoři a partneři klubu, logo v src/assets/sponzori
+const sponzori = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/sponzori' }),
+  schema: z.object({
+    title: z.string(), // název sponzora
+    popis: z.string().optional(),
+    logo: z.string().optional(),
+    odkaz: z.string().optional(), // odkaz na web sponzora
+    poradi: z.number().default(99),
+  }),
+});
+
+export const collections = { aktuality, instruktori, sponzori };
