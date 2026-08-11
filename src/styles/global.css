@@ -195,6 +195,24 @@ img { max-width: 100%; height: auto; display: block; }
   padding-block: 4.5rem 3rem;
 }
 
+/* text vlevo, logo vpravo; na úzkých displejích se logo zalomí pod text */
+.hero .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2rem 3rem;
+}
+
+.hero-text { flex: 1 1 34rem; }
+
+/* logo má bílé pozadí – multiply ho nechá splynout s podkladem stránky */
+.hero-logo {
+  flex: 0 0 auto;
+  width: clamp(13rem, 26vw, 20rem);
+  margin-inline: auto;
+  mix-blend-mode: multiply;
+}
+
 .hero .eyebrow {
   display: inline-block;
   font-size: 0.85rem;
