@@ -1,8 +1,10 @@
 ---
 import '@fontsource-variable/inter';
 import '../styles/global.css';
+import { Image } from 'astro:assets';
 import kontakty from '../data/kontakty.json';
 import SocialniSite from '../components/SocialniSite.astro';
+import logo from '../assets/zko-nupaky-logo.png';
 
 interface Props {
   title?: string;
@@ -26,6 +28,7 @@ const nav = [
   { href: `${base}/kurzy/`, label: 'Kurzy' },
   { href: `${base}/instruktori/`, label: 'Instruktoři' },
   { href: `${base}/fotoalbum/`, label: 'Fotoalbum' },
+  { href: `${base}/podporuji-nas/`, label: 'Podporují nás' },
   { href: `${base}/kontakty/`, label: 'Kontakty' },
 ];
 
@@ -54,13 +57,7 @@ const rok = new Date().getFullYear();
     <header class="site-header">
       <div class="container">
         <a class="brand" href={`${base}/`}>
-          <svg width="26" height="26" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
-            <ellipse cx="24" cy="38" rx="10" ry="13" transform="rotate(-20 24 38)" />
-            <ellipse cx="44" cy="26" rx="10" ry="13" transform="rotate(-6 44 26)" />
-            <ellipse cx="64" cy="27" rx="10" ry="13" transform="rotate(8 64 27)" />
-            <ellipse cx="82" cy="41" rx="9" ry="12" transform="rotate(24 82 41)" />
-            <path d="M52 44c14 0 26 10 29 23 2 9-4 16-13 16-6 0-10-3-16-3s-10 3-16 3c-9 0-15-7-13-16 3-13 15-23 29-23z" />
-          </svg>
+          <Image src={logo} alt="" height={44} densities={[1, 2]} loading="eager" />
           ZKO Nupaky
         </a>
         <nav class="site-nav" aria-label="Hlavní navigace">

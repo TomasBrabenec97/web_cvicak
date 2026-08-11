@@ -18,6 +18,11 @@ media:
     input: src/assets/instruktori
     output: /src/assets/instruktori
     extensions: [jpg, jpeg, png, webp]
+  - name: sponzori
+    label: Loga sponzorů
+    input: src/assets/sponzori
+    output: /src/assets/sponzori
+    extensions: [jpg, jpeg, png, webp, svg]
 
 content:
   - name: aktuality
@@ -96,6 +101,37 @@ content:
       - name: body
         label: Medailonek
         type: rich-text
+
+  - name: sponzori
+    label: Podporují nás
+    description: Sponzoři a partneři klubu – zobrazují se na stránce Podporují nás.
+    type: collection
+    path: src/content/sponzori
+    view:
+      fields: [title, odkaz]
+      default:
+        sort: poradi
+        order: asc
+    fields:
+      - name: title
+        label: Název
+        type: string
+        required: true
+      - name: popis
+        label: Popis (pár vět o sponzorovi)
+        type: text
+      - name: logo
+        label: Logo
+        type: image
+        options:
+          media: sponzori
+      - name: odkaz
+        label: Odkaz na web (celá adresa včetně https://)
+        type: string
+      - name: poradi
+        label: Pořadí na stránce (1 = první)
+        type: number
+        default: 99
 
   - name: kurzy
     label: Kurzy a ceny
