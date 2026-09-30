@@ -8,7 +8,8 @@ obrazek: /src/assets/aktuality/1.jpg
 ---
 Přihlášky - pí. Procházková 602 875 309
 
-Termíny a časy 
+ [https://www.facebook.com/photo?fbid=122113798275408937&set=a.122102138391408937](https://www.facebook.com/photo?fbid=122113798275408937&set=a.122102138391408937)
 
-![image.png](/src/assets/galerie/image.png)
 
+
+&nbsp;
