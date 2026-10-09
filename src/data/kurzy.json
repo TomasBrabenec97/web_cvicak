@@ -5,34 +5,22 @@
     {
       "nazev": "Štěňata a začátečníci",
       "popis": "Základy poslušnosti a socializace.",
-      "termin": "neděle a středa od 18:00",
-      "rozvrh": [
-        { "den": "středa", "cas": "18:00" },
-        { "den": "neděle", "cas": "18:00" }
-      ]
+      "termin": "Přesný termín zveřejněn v sekci Aktuality"
     },
     {
       "nazev": "Pokročilí",
       "popis": "Pro psy, kteří již ovládají základy a chtějí se dále rozvíjet.",
-      "termin": "neděle a středa od 18:00",
-      "rozvrh": [
-        { "den": "středa", "cas": "18:00" },
-        { "den": "neděle", "cas": "18:00" }
-      ]
+      "termin": "Přesný termín zveřejněn v sekci Aktuality"
     },
     {
       "nazev": "Sportovky",
       "popis": "Výcvik hrou pro psy se základní poslušností, kteří se chtějí hýbat.",
-      "termin": "čtvrtek",
-      "rozvrh": [
-        { "den": "čtvrtek", "cas": "" }
-      ]
+      "termin": "Přesný termín zveřejněn v sekci Aktuality"
     },
     {
       "nazev": "Pachové práce",
       "popis": "Rozvoj přirozených schopností psa – nosework, stopování.",
-      "termin": "termín bude doplněn",
-      "rozvrh": []
+      "termin": "Přesný termín zveřejněn v sekci Aktuality"
     }
   ],
   "cenik": [
